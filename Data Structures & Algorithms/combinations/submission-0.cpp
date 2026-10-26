@@ -1,32 +1,33 @@
 class Solution {
 public:
     vector<vector<int>> ans;
-    vector<int> v;
+    vector<int>subset;
 
-    void run(int n, int item, int k) {
-        if (v.size() == k) {
-            ans.push_back(v);
+    void helper(int n, int k, int i) {
+        if (subset.size() == k) {
+            ans.push_back(subset);
             return;
         }
-        
-        if (n - item + 1 < k - v.size()) {
+
+        if (i > n) {
             return;
         }
-        
-        // choose item
-        v.push_back(item);
-        run(n, item + 1, k);
-        v.pop_back();
-        
-        // not choose
-        run(n, item + 1, k);
+
+        // choose i
+        subset.push_back(i);
+        helper(n, k, i + 1);
+        subset.pop_back();
+
+        // not choose i
+        helper(n, k, i + 1);
     }
 
     vector<vector<int>> combine(int n, int k) {
-        v.clear();
         ans.clear();
-        run(n, 1, k);
+        subset.clear();
 
-        return ans;
+        helper(n, k, 1);
+
+        return ans;    
     }
 };
